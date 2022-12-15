@@ -8,7 +8,7 @@ port (
 end;
 
 architecture def of segment_7 is
-	signal bcd: bit_vector(9 downto 0);
+	signal bcd: bit_vector(15 downto 0);
 begin
 	BCD_DATA : entity work.bcd_4bit port map(
 		number => bcd,

@@ -1,6 +1,9 @@
 library ieee;
 
 entity cu_32bit is
+generic (
+	bootloaderStartAddr: bit_vector(31 downto 0) := x"00000000"
+);
 port (
 	memRd: in bit_vector(31 downto 0);
 	memWr: out bit_vector(31 downto 0);
@@ -176,7 +179,7 @@ begin
 		s => pcDtmp,
 		ci => '0'
 	);
-	pcD(31 downto 1) <= pcDtmp(31 downto 1);
+	
 	pcD(0) <= '0';
 
 	BRANCHMUX : entity work.mux2_32bit port map (
@@ -188,10 +191,10 @@ begin
 
 	process (clk)
 	begin
-	if rising_edge(clk) then
+	if clk'event and clk = '1' then
 		if rst = '1' or rstState = "00" then
 			state <= "00001";
-			pcD <= zero; -- start-address here
+			pcD(31 downto 1) <= bootloaderStartAddr(31 downto 1);
 			rstState <= "01";
 			pcSet <= '0';
 			read <= '0';
@@ -213,7 +216,9 @@ begin
 			read <= '1';
 			memAddr <= pcD;
 		elsif state = "00010" then --decode/execute
-			instruction <= memWord;
+			pcD(31 downto 1) <= pcDtmp(31 downto 1);
+			
+			instruction <= memRd;
 			opcode <= instruction(6 downto 0);
 			rs1 <= instruction(19 downto 15);
 			rs2 <= instruction(24 downto 20);
