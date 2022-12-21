@@ -14,7 +14,7 @@ port(
 end;
 
 architecture def of module_switches is
-	signal rData, wData: bit_vector(15 downto 0);
+	signal rData, wData, rDataTmp: bit_vector(15 downto 0);
 	constant ZERO: bit_vector(15 downto 0) := x"0000";
 begin
 	process(clk)
@@ -28,15 +28,19 @@ begin
 			elsif memAddr = x"00000002" then
 				if write = '1' then
 					wData <= memWr(15 downto 0);
-				elsif read = '1' then
-					memRd(15 downto 0) <= rData;
 				end if;
-			else
-				memRd(15 downto 0) <= ZERO; 
 			end if;
 		end if;
 	end process;
 	
 	memRd(31 downto 16) <= ZERO;
 	leds <= wData;
+
+	with memAddr select rDataTmp <=
+		rData when x"00000002",
+		ZERO when others;
+
+	with read select memRd(15 downto 0) <=
+		rDataTmp when '1',
+		ZERO when others;
 end;

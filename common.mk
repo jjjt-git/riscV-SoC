@@ -19,7 +19,7 @@ else ifeq ($(TARGET),nexys4ddr)
   DEVICE := xc7a100t_test
   BITSTREAM_DEVICE := artix7
   PARTNAME := xc7a100tcsg324-1
-  OFL_BOARD := digilent
+  OFL_BOARD := arty
 else ifeq ($(TARGET),zybo)
   DEVICE := xc7z010_test
   BITSTREAM_DEVICE := zynq7
