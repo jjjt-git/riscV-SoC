@@ -88,5 +88,5 @@ download: ${BOARD_BUILDDIR}/${TOP}.bit
 	fi
 	openFPGALoader -b ${OFL_BOARD} ${BOARD_BUILDDIR}/${TOP}.bit
 
-clean:
+clear clean:
 	rm -rf ${BUILDDIR}
