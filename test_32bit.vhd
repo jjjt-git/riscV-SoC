@@ -13,7 +13,7 @@ end;
 architecture def of test_32bit is
 	signal memWr, memAddr, memRd, memRdRom, memRdSwitches: bit_vector(31 downto 0);
 	signal coreClk, realReset, memFetch, memRead, memWrite: bit;
-	signal clkCounter, clkCounter_next: bit_vector(19 downto 0);
+	signal clkCounter, clkCounter_next: bit_vector(14 downto 0);
 begin
 
 	MODULE_SEGMENTS : entity work.module_segment port map(
@@ -66,7 +66,7 @@ begin
 		s => clkCounter_next
 	);
 	
-	coreClk <= clkCounter(19);
+	coreClk <= clkCounter(14);
 --	coreClk <= btnUp;
 
 	realReset <= not reset;
@@ -81,15 +81,15 @@ end;
 
 entity incrementor_26bit is
 port (
-	a: in bit_vector(19 downto 0);
-	s: out bit_vector(19 downto 0)
+	a: in bit_vector(14 downto 0);
+	s: out bit_vector(14 downto 0)
 );
 end;
 
 architecture def of incrementor_26bit is
-	signal c: bit_vector(20 downto 0);
+	signal c: bit_vector(15 downto 0);
 begin
 	c(0) <= '1';
-	c(20 downto 1) <= a and c(19 downto 0);
-	s <= a xor c(19 downto 0);
+	c(15 downto 1) <= a and c(14 downto 0);
+	s <= a xor c(14 downto 0);
 end;
